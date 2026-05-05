@@ -9,6 +9,7 @@
         .header { background-color: #2c3e50; color: white; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 30px; }
         .progress-container { width: 100%; background-color: #ddd; border-radius: 10px; margin-bottom: 20px; }
         .progress-bar { height: 20px; background-color: #27ae60; width: 0%; border-radius: 10px; transition: width 0.3s; }
+        #name-screen { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
         .question-card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: none; }
         .question-card.active { display: block; }
         .option { display: block; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; transition: 0.2s; }
@@ -17,7 +18,10 @@
         .btn-nav { background-color: #2c3e50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 20px; }
         .btn-nav:disabled { background-color: #95a5a6; }
         #results-screen { display: none; background: white; padding: 30px; border-radius: 8px; text-align: center; }
-        .rationale { display: none; margin-top: 15px; padding: 15px; background-color: #e8f6f3; border-left: 5px solid #1abc9c; font-size: 0.9em; }
+        .rationale { display: none; margin-top: 15px; padding: 15px; background-color: #e8f6f3; border-left: 5px solid #1abc9c; font-size: 0.9em; text-align: left; }
+        .input-group { margin: 20px 0; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .input-group input { padding: 10px; width: 60%; border: 1px solid #ccc; border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -25,6 +29,15 @@
 <div class="header">
     <h1>Nurse Specialist Day 1</h1>
     <p>Advanced Clinical Synthesis Test (SCFHS Blueprint)</p>
+</div>
+
+<div id="name-screen">
+    <h2>Welcome to Test Mastery</h2>
+    <div class="input-group">
+        <label for="examinee-name">Enter Your Name:</label>
+        <input type="text" id="examinee-name" placeholder="John Doe">
+    </div>
+    <button class="btn-nav" onclick="startQuiz()">Start Exam</button>
 </div>
 
 <div class="progress-container">
@@ -36,7 +49,9 @@
 
 <div id="results-screen">
     <h2>Exam Complete</h2>
+    <p><strong>Examinee:</strong> <span id="display-name"></span></p>
     <p id="score-text"></p>
+    <p id="percentage-text"></p>
     <button class="btn-nav" onclick="location.reload()">Restart Exam</button>
 </div>
 
@@ -51,7 +66,7 @@
                 "Teaching the patient about a low-sodium diet."
             ],
             correct: 1,
-            rationale: "Evaluation requires judging progress by comparing new data against previous baselines to see if interventions worked."
+            rationale: "Evaluation requires judging progress by comparing new data (BNP 1,200) against previous baselines to see if interventions worked."
         },
         {
             q: "A 28-year-old pregnant patient at 34 weeks gestation presents with sudden, painless, bright red vaginal bleeding. Based on Specialist safety domains, what is the priority nursing action?",
@@ -96,12 +111,244 @@
             ],
             correct: 1,
             rationale: "Hyperkalemia (>5.0 mEq/L) accelerates repolarization, causing 'peaked' T waves, and slows conduction, leading to a widened QRS."
+        },
+        {
+            q: "A patient with Chronic Obstructive Pulmonary Disease (COPD) is receiving oxygen via a nasal cannula at 2L/min. The nurse technician reports an oxygen saturation of 89%. What is the best rationale for the specialist to maintain this current rate?",
+            options: [
+                "89% is a dangerously low level for any patient.",
+                "Increasing oxygen too high can abolish the patient's stimulus to breathe.",
+                "The nurse technician likely obtained an inaccurate reading.",
+                "Oxygen is only effective if given at 6L/min or higher."
+            ],
+            correct: 1,
+            rationale: "In some COPD patients, the stimulus to breathe is low O2 rather than high CO2. Over-oxygenating can lead to respiratory depression."
+        },
+        {
+            q: "A nurse specialist is reviewing a research article to update the unit's pressure ulcer protocol. Which level of evidence is considered the 'Gold Standard' for changing clinical practice?",
+            options: [
+                "A single descriptive or qualitative study.",
+                "Expert opinion from a renowned specialist.",
+                "A systematic review or meta-analysis of randomized controlled trials (RCTs).",
+                "A case-control study with a small sample size."
+            ],
+            correct: 2,
+            rationale: "Systematic reviews and meta-analyses sit at the top of the pyramid because they synthesize findings from multiple high-quality RCTs."
+        },
+        {
+            q: "An elderly patient with dementia is found wandering the halls. A staff member suggests applying wrist restraints. What is the specialist's best response based on ethical standards?",
+            options: [
+                "Apply them immediately to prevent a fall.",
+                "We should try alternative methods like a bed alarm or family presence first.",
+                "Restraints are the most effective way to manage agitation.",
+                "As long as the doctor orders it later, we can apply them now."
+            ],
+            correct: 1,
+            rationale: "Ethically and legally, nurses must exhaust all non-physical alternatives before infringing on a patient's freedom of movement."
+        },
+        {
+            q: "A nurse specialist is assigned a patient with Acute Respiratory Distress Syndrome (ARDS) on a ventilator. The patient's PaO2/FiO2 ratio is 150. What does this value indicate?",
+            options: [
+                "The patient is improving and ready for weaning.",
+                "The patient has a severe impairment in gas exchange.",
+                "The patient is experiencing mild hypoxemia.",
+                "The patient is hyperventilating due to pain."
+            ],
+            correct: 1,
+            rationale: "A ratio below 200 is a diagnostic hallmark of ARDS, signifying that the lungs are failing to transfer oxygen effectively to the blood."
+        },
+        {
+            q: "A nurse specialist is teaching a new graduate about the 'Right of Delegation.' Which factor is most critical when deciding if a task is 'Right' for a technician?",
+            options: [
+                "The technician's years of experience in the hospital.",
+                "Whether the task requires clinical judgment or interpretation of data.",
+                "The current workload of the other nurses on the unit.",
+                "If the patient's family prefers the technician to perform the task."
+            ],
+            correct: 1,
+            rationale: "Delegation is strictly for routine, predictable tasks. If a task requires any level of assessment or judgment, it cannot be delegated."
+        },
+        {
+            q: "A 60-year-old female is admitted with a suspected Myocardial Infarction (MI). The nurse specialist knows that women may present with 'atypical' symptoms. Which symptom is most commonly associated with MI in female patients?",
+            options: [
+                "Crushing substernal chest pain radiating to the left arm.",
+                "Extreme fatigue, nausea, and epigastric pain.",
+                "Sudden onset of a high fever and productive cough.",
+                "Sharp, pleuritic chest pain that worsens with a deep breath."
+            ],
+            correct: 1,
+            rationale: "Women often do not experience the 'classic' chest pain; instead, they present with fatigue and GI symptoms, which often leads to delayed treatment."
+        },
+        {
+            q: "A patient with cirrhosis and ascites is scheduled for a paracentesis. What is the specialist's priority rationale for asking the patient to void (urinate) before the procedure?",
+            options: [
+                "To prevent the patient from being uncomfortable during the long procedure.",
+                "To reduce the risk of accidental bladder puncture during needle insertion.",
+                "To ensure an accurate measurement of the patient's weight after the procedure.",
+                "To prevent the patient from developing a urinary tract infection."
+            ],
+            correct: 1,
+            rationale: "A full bladder rises into the abdominal cavity. Voiding ensures the bladder is contracted and out of the path of the paracentesis needle."
+        },
+        {
+            q: "A 10-year-old child is admitted with a diagnosis of Osteomyelitis. Based on the Maternal-Child Specialist domain, which intervention is the priority for this patient?",
+            options: [
+                "Encouraging high-impact physical activity to strengthen the bone.",
+                "Ensuring the consistent and timely administration of long-term IV antibiotics.",
+                "Applying warm compresses to the site to increase circulation.",
+                "Starting the child on a low-calcium diet to reduce bone density."
+            ],
+            correct: 1,
+            rationale: "Because bone tissue has a limited blood supply, eradicating deep-seated infection requires a rigorous 4-6 week course of IV antimicrobial therapy."
+        },
+        {
+            q: "A nurse specialist is conducting an initial assessment on a patient with a head injury. The specialist notes the patient has 'Clear fluid' leaking from the nose. What is the best rationale for the specialist to check this fluid for glucose?",
+            options: [
+                "To determine if the patient has underlying undiagnosed diabetes.",
+                "To confirm if the fluid is Cerebrospinal Fluid (CSF).",
+                "To see if the patient is suffering from a common cold or sinus infection.",
+                "To check for the presence of bacteria in the nasal passage."
+            ],
+            correct: 1,
+            rationale: "Mucus contains no sugar, but CSF does. A positive glucose test (or a 'halo' on gauze) confirms a dural tear, placing the patient at high risk for meningitis."
+        },
+        {
+            q: "A patient with a history of severe depression and suicidal ideation is being discharged. According to the Specialist ethical and safety blueprint, what is the most important component of the discharge plan?",
+            options: [
+                "Providing the patient with a 3-month supply of their antidepressant medication.",
+                "Establishing a 'Contract for Safety' and providing a 24-hour crisis hotline number.",
+                "Telling the patient to avoid all stressful situations for the next month.",
+                "Scheduling a follow-up appointment for six weeks after discharge."
+            ],
+            correct: 1,
+            rationale: "The period immediately following discharge is the highest risk for suicide. A safety contract and immediate help access are the primary life-saving interventions."
+        },
+        {
+            q: "A nurse specialist is caring for a patient on a heparin drip. The patient's latest aPTT is 110 seconds (Control: 30 seconds). What is the nurse's priority rationale for holding the drip?",
+            options: [
+                "The heparin is no longer effective because the aPTT is too high.",
+                "The patient is at extremely high risk for spontaneous hemorrhage.",
+                "The patient has likely developed a resistance to heparin therapy.",
+                "The nurse needs to wait for the next dose of Warfarin to be administered."
+            ],
+            correct: 1,
+            rationale: "For heparin, the goal is usually 1.5-2.5 times the control. At 110 seconds (nearly 4x control), the blood is critically thin, risking internal bleeding."
+        },
+        {
+            q: "A nurse specialist is working in a disaster area and uses the START triage system. A victim is found with a respiratory rate of 34, capillary refill of 4 seconds, and is unable to follow simple commands. What tag color should be assigned?",
+            options: [
+                "Green (Minor)",
+                "Yellow (Delayed)",
+                "Red (Immediate)",
+                "Black (Expectant)"
+            ],
+            correct: 2,
+            rationale: "If RR > 30, Cap Refill > 2 seconds, or the patient cannot follow commands, they are tagged RED for immediate life-saving intervention."
+        },
+        {
+            q: "A patient with systemic lupus erythematosus (SLE) is being taught about lifestyle modifications. Which specialist-level recommendation is most important for preventing a flare-up?",
+            options: [
+                "Avoiding all dairy products and red meat.",
+                "Using high-SPF sunscreen and avoiding direct sunlight.",
+                "Increasing daily caffeine intake to combat fatigue.",
+                "Stopping all medications as soon as the symptoms improve."
+            ],
+            correct: 1,
+            rationale: "UV light is a major trigger for SLE. Sun exposure can cause not just skin rashes, but systemic organ inflammation (flares)."
+        },
+        {
+            q: "An infant is born to a mother who is HIV-positive. What is the specialist's priority rationale for administering Zidovudine (AZT) to the newborn immediately after birth?",
+            options: [
+                "To cure the infant of the HIV infection acquired in utero.",
+                "To reduce the risk of vertical transmission of the virus from mother to child.",
+                "To prevent the infant from developing childhood leukemia.",
+                "To boost the infant's immune system against common nursery infections."
+            ],
+            correct: 1,
+            rationale: "Administering AZT within 6-12 hours of birth significantly lowers the risk of the baby converting to HIV-positive status."
+        },
+        {
+            q: "A nurse specialist is assessing a patient with a cast on the right lower leg. The patient reports severe pain that is not relieved by elevation or morphine. The toes are pale with a capillary refill of 5 seconds. What is the priority rationale for notifying the surgeon?",
+            options: [
+                "The patient is experiencing an allergic reaction to the cast material.",
+                "The patient has likely developed Compartment Syndrome.",
+                "The morphine dose was insufficient for the patient's size.",
+                "The patient is simply anxious about being in a cast for the first time."
+            ],
+            correct: 1,
+            rationale: "Pain out of proportion to the injury that does not respond to opioids, combined with pale skin and slow refill, indicates muscle ischemia due to high pressure."
+        },
+        {
+            q: "A specialist is caring for a patient with a Sengstaken-Blakemore tube in place for bleeding esophageal varices. The patient suddenly develops severe respiratory distress. What is the nurse's first immediate action?",
+            options: [
+                "Call the physician and wait for further instructions.",
+                "Increase the suction on the gastric aspiration port.",
+                "Cut the tube ports with scissors and remove the tube.",
+                "Administer 100% oxygen via a non-rebreather mask."
+            ],
+            correct: 2,
+            rationale: "If the esophageal balloon migrates upward, it blocks the airway. The only way to restore ventilation immediately is to cut the tube to deflate all balloons."
+        },
+        {
+            q: "A nurse specialist is teaching a patient with heart failure about fluid restriction. Which action by the patient best indicates that the teaching was effective?",
+            options: [
+                "The patient states they will drink whenever they feel thirsty.",
+                "The patient weighs themselves daily and reports a gain of 1.5kg in two days.",
+                "The patient promises to eat more green leafy vegetables.",
+                "The patient stops taking their diuretic if they have to go out for the day."
+            ],
+            correct: 1,
+            rationale: "Daily weights are the Gold Standard for monitoring fluid volume in heart failure. Reporting a sudden gain shows the patient understands the need for clinical monitoring."
+        },
+        {
+            q: "According to the SCFHS specialist blueprint, what is the management priority when a nurse discovers a medication error has occurred?",
+            options: [
+                "Immediately fill out an incident report before telling anyone.",
+                "Assess the patient's vital signs and clinical status.",
+                "Call the pharmacy to see if the wrong medication was sent.",
+                "Hide the error if the patient doesn't show any symptoms."
+            ],
+            correct: 1,
+            rationale: "Consistent with the Assessment phase of the nursing process, the nurse must first determine if the error caused physiological harm before proceeding to administrative reporting."
+        },
+        {
+            q: "A patient with chronic kidney disease (CKD) has a potassium level of 6.8 mEq/L. Which ECG change is the specialist most likely to observe?",
+            options: [
+                "Prominent U waves and a flat T wave.",
+                "Tall, peaked T waves and a widened QRS complex.",
+                "ST-segment elevation in two or more contiguous leads.",
+                "A shortened PR interval and a delta wave."
+            ],
+            correct: 1,
+            rationale: "Elevated potassium levels disrupt cardiac repolarization, causing characteristic tall 'tented' T waves and eventually widening the QRS."
+        },
+        {
+            q: "A 75-year-old patient is admitted with a hip fracture. The specialist knows that this patient is at high risk for a Fat Embolism. Which clinical finding is the most specific indicator of this complication?",
+            options: [
+                "Generalized weakness and a low-grade fever.",
+                "A petechial rash over the chest, neck, and axilla.",
+                "An increased white blood cell count and localized swelling.",
+                "Persistent constipation and urinary retention."
+            ],
+            correct: 1,
+            rationale: "While hypoxia and confusion are common in many emboli, the appearance of petechiae on the upper body is a unique, late-stage sign of Fat Embolism Syndrome."
         }
-        // Additional questions from your document can be added here following the same format.
     ];
 
     let currentQuestionIndex = 0;
     let score = 0;
+    let examineeName = "";
+
+    function startQuiz() {
+        const nameInput = document.getElementById('examinee-name').value.trim();
+        if (!nameInput) {
+            alert("Please enter your name to start.");
+            return;
+        }
+        examineeName = nameInput;
+        document.getElementById('name-screen').style.display = 'none';
+        document.getElementById('quiz-container').style.display = 'block';
+        initQuiz();
+    }
 
     function initQuiz() {
         const container = document.getElementById('quiz-container');
@@ -109,7 +356,7 @@
             const card = document.createElement('div');
             card.className = `question-card ${index === 0 ? 'active' : ''}`;
             card.innerHTML = `
-                <h3>Question ${index + 1}</h3>
+                <h3>Question ${index + 1} of ${questions.length}</h3>
                 <p>${q.q}</p>
                 ${q.options.map((opt, i) => `<div class="option" onclick="selectOption(${index}, ${i}, this)">${opt}</div>`).join('')}
                 <div class="rationale" id="rationale-${index}"><strong>Rationale:</strong> ${q.rationale}</div>
@@ -117,29 +364,30 @@
             `;
             container.appendChild(card);
         });
+        updateProgress();
     }
 
     function selectOption(qIndex, oIndex, element) {
         const card = document.querySelectorAll('.question-card')[qIndex];
         const options = card.querySelectorAll('.option');
         
-        // Prevent multiple clicks
         if (card.querySelector('.selected')) return;
 
         element.classList.add('selected');
         const rationale = card.querySelector('.rationale');
-        rationale.display = 'block';
+        rationale.style.display = 'block';
         
         if (oIndex === questions[qIndex].correct) {
             score++;
             element.style.backgroundColor = "#27ae60";
+            element.style.color = "white";
         } else {
             element.style.backgroundColor = "#e74c3c";
+            element.style.color = "white";
             options[questions[qIndex].correct].style.backgroundColor = "#27ae60";
             options[questions[qIndex].correct].style.color = "white";
         }
 
-        rationale.style.display = 'block';
         document.getElementById(`next-btn-${qIndex}`).style.display = 'block';
     }
 
@@ -166,10 +414,13 @@
         document.getElementById('quiz-container').style.display = 'none';
         const results = document.getElementById('results-screen');
         results.style.display = 'block';
-        document.getElementById('score-text').innerText = `You scored ${score} out of ${questions.length}`;
+        
+        document.getElementById('display-name').innerText = examineeName;
+        document.getElementById('score-text').innerText = `You scored ${score} out of ${questions.length} correct.`;
+        
+        const percentage = ((score / questions.length) * 100).toFixed(1);
+        document.getElementById('percentage-text').innerText = `Percentage: ${percentage}%`;
     }
-
-    initQuiz();
 </script>
 
 </body>
