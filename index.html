@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nurse Specialist Day 1: Advanced Clinical Synthesis Test</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f7f6; }
+        .header { background-color: #2c3e50; color: white; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 30px; }
+        .progress-container { width: 100%; background-color: #ddd; border-radius: 10px; margin-bottom: 20px; }
+        .progress-bar { height: 20px; background-color: #27ae60; width: 0%; border-radius: 10px; transition: width 0.3s; }
+        .question-card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: none; }
+        .question-card.active { display: block; }
+        .option { display: block; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; transition: 0.2s; }
+        .option:hover { background-color: #ecf0f1; }
+        .option.selected { background-color: #3498db; color: white; border-color: #2980b9; }
+        .btn-nav { background-color: #2c3e50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 20px; }
+        .btn-nav:disabled { background-color: #95a5a6; }
+        #results-screen { display: none; background: white; padding: 30px; border-radius: 8px; text-align: center; }
+        .rationale { display: none; margin-top: 15px; padding: 15px; background-color: #e8f6f3; border-left: 5px solid #1abc9c; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Nurse Specialist Day 1</h1>
+    <p>Advanced Clinical Synthesis Test (SCFHS Blueprint)</p>
+</div>
+
+<div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+</div>
+
+<div id="quiz-container">
+    </div>
+
+<div id="results-screen">
+    <h2>Exam Complete</h2>
+    <p id="score-text"></p>
+    <button class="btn-nav" onclick="location.reload()">Restart Exam</button>
+</div>
+
+<script>
+    const questions = [
+        {
+            q: "A 45-year-old male with heart failure is admitted with acute shortness of breath. The nurse notes bilateral crackles and a brain natriuretic peptide (BNP) level of 1,200 pg/mL. Which action by the nurse specialist best demonstrates the 'Evaluation' phase?",
+            options: [
+                "Administering the prescribed dose of IV Furosemide.",
+                "Comparing the current BNP and lung sounds to baseline findings from 24 hours ago.",
+                "Auscultating the patient's breath sounds and documenting the presence of crackles.",
+                "Teaching the patient about a low-sodium diet."
+            ],
+            correct: 1,
+            rationale: "Evaluation requires judging progress by comparing new data against previous baselines to see if interventions worked."
+        },
+        {
+            q: "A 28-year-old pregnant patient at 34 weeks gestation presents with sudden, painless, bright red vaginal bleeding. Based on Specialist safety domains, what is the priority nursing action?",
+            options: [
+                "Perform a sterile vaginal exam to check for cervical dilation.",
+                "Assess fetal heart rate and initiate continuous external monitoring.",
+                "Prepare the patient for an immediate emergency C-section.",
+                "Administer Oxytocin to control the bleeding."
+            ],
+            correct: 1,
+            rationale: "Painless bleeding is a hallmark of Placenta Previa. Vaginal exams are strictly contraindicated as they can trigger catastrophic hemorrhage. Fetal assessment is the priority."
+        },
+        {
+            q: "A patient with a head injury has clear fluid leaking from the nose. What is the specialist's best rationale for testing this fluid for glucose?",
+            options: [
+                "To determine if the patient has undiagnosed diabetes.",
+                "To confirm if the fluid is Cerebrospinal Fluid (CSF).",
+                "To check for a common sinus infection.",
+                "To identify the presence of bacteria."
+            ],
+            correct: 1,
+            rationale: "CSF naturally contains glucose. Its presence in nasal drainage (rhinorrhea) confirms a dural tear and potential skull fracture."
+        },
+        {
+            q: "A specialist discovers a medication error has occurred. What is the management priority?",
+            options: [
+                "Immediately fill out an incident report.",
+                "Assess the patient's vital signs and clinical status.",
+                "Call the pharmacy to check the supply chain.",
+                "Notify the supervisor to assign blame."
+            ],
+            correct: 1,
+            rationale: "The Nursing Process always starts with assessment. Before reporting or documenting, the nurse must ensure the patient is physically stable."
+        },
+        {
+            q: "A patient with Chronic Kidney Disease (CKD) has a potassium level of 6.8 mEq/L. Which ECG change is the specialist most likely to observe?",
+            options: [
+                "Prominent U waves and flat T waves.",
+                "Tall, peaked T waves and a widened QRS complex.",
+                "ST-segment elevation in contiguous leads.",
+                "A shortened PR interval."
+            ],
+            correct: 1,
+            rationale: "Hyperkalemia (>5.0 mEq/L) accelerates repolarization, causing 'peaked' T waves, and slows conduction, leading to a widened QRS."
+        }
+        // Additional questions from your document can be added here following the same format.
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    function initQuiz() {
+        const container = document.getElementById('quiz-container');
+        questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = `question-card ${index === 0 ? 'active' : ''}`;
+            card.innerHTML = `
+                <h3>Question ${index + 1}</h3>
+                <p>${q.q}</p>
+                ${q.options.map((opt, i) => `<div class="option" onclick="selectOption(${index}, ${i}, this)">${opt}</div>`).join('')}
+                <div class="rationale" id="rationale-${index}"><strong>Rationale:</strong> ${q.rationale}</div>
+                <button class="btn-nav" id="next-btn-${index}" onclick="nextQuestion()" style="display:none">Next Question</button>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function selectOption(qIndex, oIndex, element) {
+        const card = document.querySelectorAll('.question-card')[qIndex];
+        const options = card.querySelectorAll('.option');
+        
+        // Prevent multiple clicks
+        if (card.querySelector('.selected')) return;
+
+        element.classList.add('selected');
+        const rationale = card.querySelector('.rationale');
+        rationale.display = 'block';
+        
+        if (oIndex === questions[qIndex].correct) {
+            score++;
+            element.style.backgroundColor = "#27ae60";
+        } else {
+            element.style.backgroundColor = "#e74c3c";
+            options[questions[qIndex].correct].style.backgroundColor = "#27ae60";
+            options[questions[qIndex].correct].style.color = "white";
+        }
+
+        rationale.style.display = 'block';
+        document.getElementById(`next-btn-${qIndex}`).style.display = 'block';
+    }
+
+    function nextQuestion() {
+        const cards = document.querySelectorAll('.question-card');
+        cards[currentQuestionIndex].classList.remove('active');
+        currentQuestionIndex++;
+
+        updateProgress();
+
+        if (currentQuestionIndex < questions.length) {
+            cards[currentQuestionIndex].classList.add('active');
+        } else {
+            showResults();
+        }
+    }
+
+    function updateProgress() {
+        const percent = (currentQuestionIndex / questions.length) * 100;
+        document.getElementById('progress-bar').style.width = percent + '%';
+    }
+
+    function showResults() {
+        document.getElementById('quiz-container').style.display = 'none';
+        const results = document.getElementById('results-screen');
+        results.style.display = 'block';
+        document.getElementById('score-text').innerText = `You scored ${score} out of ${questions.length}`;
+    }
+
+    initQuiz();
+</script>
+
+</body>
+</html>
